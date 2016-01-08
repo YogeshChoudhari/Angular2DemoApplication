@@ -1,0 +1,49 @@
+<h1>Making Http Requests</h1>
+
+<div class="alert alert-success" role="alert">
+    List of just friends loaded successfully
+</div>
+<div *ngFor="#friend of result.friends">
+    {{friend}}
+</div>
+<br/>
+
+<div class="alert alert-success" role="alert">
+    List of friends and customer loaded successfully in parallel
+</div>
+<div>Friends:</div>
+<div *ngFor="#friend of combined.friends">
+    {{friend}}
+</div>
+<br/>
+<div>Customer:</div>
+<div>{{combined.customer.name}}</div>
+
+<br/>
+<div class="alert alert-success" role="alert">
+    Loaded a contract after first loading a customer
+</div>
+<div>
+    <div>Customer: {{customer.name}}</div>
+    <div>Product: {{contract.product}}</div>
+</div>
+
+<br/>
+<div *ngIf="error">
+    <div class="alert alert-danger" role="alert">
+        There was an error loading the list of friends (Intentional error testing)
+    </div>
+</div>
+
+<div class="alert alert-success" role="alert">
+    Making a post request
+</div>
+<div>
+    <button (click)="postData()">Post Data</button>
+
+    <p>Posted the following values:</p>
+    <div>{{postResponse.firstName}}</div>
+    <div>{{postResponse.lastName}}</div>
+</div>
+
+<h4><a href="http://www.syntaxsuccess.com/viewarticle/angular-2.0-and-http">Read more here</a></h4>

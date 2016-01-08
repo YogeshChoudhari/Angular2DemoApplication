@@ -1,0 +1,46 @@
+import { Http, Response, Request } from 'angular2/http';
+// normally this would be imported from 'angular2/core'
+// but in our compiler we're pulling the dev version of angular2
+import {Injectable} from 'angular2/core';
+import { Task } from '../datatypes/task';
+
+
+@Injectable()
+export class TaskService {
+  constructor(public http: Http) {
+    console.log('Task Service created.', http);
+  }
+  getTasks() {
+    // return an observable
+    return this.http.get('/api/v1/tasks')
+    .map( (responseData) => {
+      return responseData.json();
+    })
+    .map((tasks: Array<any>) => {
+      let result:Array<Task> = [];
+      if (tasks) {
+        tasks.forEach((task) => {
+          result.push(new Task(task.id, task.description, task.priority, task.dueDate, task.complete));
+        });
+      }
+      return result;
+    });
+  }
+
+  addTask(description: string, priority: number, dueDate: Date) {
+    console.log('adding task - start', description, priority, dueDate);
+    var task = new Task(null, description, priority, dueDate, false);
+    return this.http.put('/api/v1/tasks', JSON.stringify(task));
+  }
+
+  toggleComplete(task: Task) {
+    if (task.complete !== true) {
+      task.setComplete();
+    } else {
+      task.clearCompleteFlag();
+    }
+    console.log('completing task', task);
+
+    return this.http.post('/api/v1/tasks', JSON.stringify(task));
+  }
+}
